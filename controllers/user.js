@@ -24,10 +24,9 @@ async function handleLogin(req,res) {
       } catch (error) {
          return res.status(400).render('login',{error:error})
       }
-     
 }
 
 
 module.exports = {
-    handleLogin,handleSingup
+   handleLogin,handleSingup
 }

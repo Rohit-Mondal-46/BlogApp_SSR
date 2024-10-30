@@ -11,7 +11,7 @@ const Blog = require('./models/blog')
 
 
 //Variable
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 
 //Instance
@@ -34,15 +34,14 @@ mongoose.connect('mongodb://localhost:27017/BlogApp').then(() => console.log("Da
 //Routes
 app.get('/',async (req, res) => {
     const allBlogs = await Blog.find({})
-    // console.log(allBlogs)
     return res.render('home',{
         user:req.user,
         blogs:allBlogs
     })
 })
-app.use('/users', userRouter)
-app.use('/blogs', blogRouter)
+app.use('/api/users', userRouter)
+app.use('/api/blogs', blogRouter)
 
 
 //Listening
-app.listen(PORT, console.log(`Server Started at PORT:${PORT}`))
+app.listen(PORT, console.log(`Server Started:http://localhost:${PORT}`))

@@ -1,5 +1,4 @@
 const {Router} = require('express')
-const handleBlogAdd = require('../controllers/blog')
 const multer = require('multer')
 const path = require('path')
 const Blog = require('../models/blog')
@@ -38,7 +37,15 @@ router.post('/add',upload.single('post-image'),async (req,res)=>{
     return res.redirect('/')
 })
 
-module.exports = router;
+
+router.get('/',async (req,res)=>{
+  const blog = await Blog.find()
+  if(!blog){
+    return res.status(404).end("404 Not Found")
+  }
+  return res.status(200).json(blog);
+})
+
 
 router.get('/:id',async (req,res)=>{
   const id = req.params.id
@@ -47,27 +54,31 @@ router.get('/:id',async (req,res)=>{
   if(!blog){
     return res.status(404).end("404 Not Found")
   }
-  return res.render("singleBlog",{
+  // console.log('new',blog[0]._id);
+  return res.render('singleBlog',{
+    blog:blog[0],
     comments:comments,
-    blog: blog[0],//since its an array
-    user:req.user
+    user: req.user
   })
+  // return res.json({blog,comments})
 })
+
 
 router.get('/my/:id',async (req,res)=>{
   const id = req.params.id
-  console.log(id);
+  // console.log(id);
   const myBlog = await Blog.find({author:id})
-  console.log(myBlog);
+  // console.log(myBlog);
   if(!myBlog){
     return res.status(404).end("404 Not Found")
   }
-  // console.log(blog[0].image);
-  return res.render("individualBlogs",{
-    blog: myBlog,
-    user:req.user
+  return res.render('individualBlogs',{
+    blog:myBlog,
+    user: req.user
   })
+  // return res.json(myBlog)
 })
+
 
 router.post('/comment/:id',async (req,res)=>{
   const {content} = req.body;
@@ -77,9 +88,11 @@ router.post('/comment/:id',async (req,res)=>{
       blogId:req.params.id,
       author:req.user.id
     })
-    return res.redirect(`/blogs/${req.params.id}`)
+    return res.redirect(`/api/blogs/${req.params.id}`)
   } catch (error) {
     return res.send({error:error.message})
     // return res.render('singleBlog',{blog: myBlog,user:req.user,error:error.message})
   }
 })
+
+module.exports = router;
