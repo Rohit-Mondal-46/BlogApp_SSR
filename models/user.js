@@ -55,6 +55,6 @@ userSchema.statics.isMatchedAndCreateToken = async function(email,password){
     return token;
 }
 
-const User = mongoose.model("users",userSchema);
+const User = mongoose.model("blog-users",userSchema);
 
 module.exports = User;

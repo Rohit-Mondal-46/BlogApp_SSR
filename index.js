@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const authStatus = require('./middleware/authentication')
 const Blog = require('./models/blog')
-
+require('dotenv').config()
 
 //Variable
 const PORT = process.env.PORT || 8000;
@@ -28,7 +28,7 @@ app.use(express.static(path.resolve('./public')))
 
 
 //DB connection
-mongoose.connect('mongodb://localhost:27017/BlogApp').then(() => console.log("Data Base Connected")).catch(() => console.log("Error in DB connection"))
+mongoose.connect(`mongodb+srv://clast98838114:${process.env.MONGO_PASSWORD}@cluster0.ovtxmed.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`).then(() => console.log("Data Base Connected")).catch((e) => console.log("Error in DB connection",e))
 
 
 //Routes

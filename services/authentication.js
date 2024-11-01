@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const secret = '$1$3^5$7#7'
+require('dotenv').config()
 
 
 function createToken(user){
@@ -9,12 +9,12 @@ function createToken(user){
         email:user.email,
         role:user.role
     }
-    const token = jwt.sign(payload,secret);
+    const token = jwt.sign(payload,process.env.JWT_SECRET);
     return token
 }
 
 function getUser(token){
-    const user = jwt.verify(token,secret);
+    const user = jwt.verify(token,process.env.JWT_SECRET);
     return user;
 }
 

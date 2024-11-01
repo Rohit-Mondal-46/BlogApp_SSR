@@ -14,7 +14,7 @@ const schema = mongoose.Schema({
     },
     author:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"users",
+        ref:"blog-users",
     },
 })
 

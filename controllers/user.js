@@ -2,13 +2,18 @@ const User = require('../models/user');
 
 async function handleSingup(req,res) {
     const {name,email,password} = req.body;
-     const user = await User.create({
-        name,email,password
-     })
-     if(!user){
-        return res.status(400).end('all field are required or email exists')
-     }
-     return res.status(200).redirect('/users/login')
+    try {
+       const user = await User.create({
+          name,email,password
+       })
+       if(!user){
+          return res.status(400).end('all field are required or email exists')
+       }
+      
+    } catch (error) {
+      return res.status(500).end('internal serval error: ',error);
+      }
+   return res.status(200).redirect('/api/users/login')
 }
 
 
